@@ -1,0 +1,23 @@
+{
+  "include": ["app/*.py"],
+  "extraPaths": [],
+  "exclude": ["**/node_modules", "**/__pycache__"],
+
+  "defineConstant": {
+    "DEBUG": true
+  },
+  "typeCheckingMode": "basic",
+  "reportGeneralTypeIssues": false,
+  "reportOptionalMemberAccess": false,
+  "reportOptionalSubscript": false,
+  "reportOptionalCall": false,
+  "reportUnknownMemberType": false,
+  "reportUnknownArgumentType": false,
+  "reportUnknownVariableType": false,
+  "reportMissingTypeStubs": false,
+  "reportMissingImports": "error",
+  "reportAny": false,
+  "reportArgumentType": false,
+  "reportUnknownParameterType": false
+}
+

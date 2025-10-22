@@ -1,84 +1,89 @@
 class Theme:
-    BACKGROUND = "#F1F5F9"
-    CARD_BG = "#1E293B"
-    ACCENT = "#3B82F6"
-    TEXT_PRIMARY = "#0F172A"
-    TEXT_SECONDARY = TEXT_PRIMARY
-    bistre = "#442E28"
-    orange_crayola = "#f3722c"
-    carrot_orange = "#f8961e"
-    coral = "#f9844a"
-    saffron = "#f9c74f"
-    pistachio = "#90be6d"
-    zomp = "#43aa8b"
-    dark_cyan = "#4d908e"
-    paynes_gray = "#577590"
-    cerulean = "#277da1"
-    CARD_BG = saffron
+    NEUTRAL_50 = "#fafafa"
+    NEUTRAL_100 = "#f5f5f5"
+    NEUTRAL_200 = "#e5e5e5"
+    NEUTRAL_300 = "#d4d4d4"
+    NEUTRAL_400 = "#a3a3a3"
+    NEUTRAL_500 = "#737373"
+    NEUTRAL_600 = "#525252"
+    NEUTRAL_700 = "#404040"
+    NEUTRAL_800 = "#262626"
+    NEUTRAL_900 = "#171717"
+    NEUTRAL_950 = "#0a0a0a"
+    INDIGO_50 = "#eef2ff"
+    INDIGO_100 = "#e0e7ff"
+    INDIGO_200 = "#c7d2fe"
+    INDIGO_300 = "#a5b4fc"
+    INDIGO_400 = "#818cf8"
+    INDIGO_500 = "#6366f1"
+    INDIGO_600 = "#4f46e5"
+    INDIGO_700 = "#4338ca"
+    INDIGO_800 = "#3730a3"
+    INDIGO_900 = "#312e81"
+    INDIGO_950 = "#1e1b4b"
+    BACKGROUND = NEUTRAL_50
+    FOREGROUND = NEUTRAL_950
+
 
 class StyleManager:
     STYLES = {
-        'input': {
-            'bg': Theme.BACKGROUND,
-            'fg': Theme.TEXT_PRIMARY,
-            'font': ('Manrope', 12),
-            'insertbackground': Theme.TEXT_PRIMARY,
-            'border': 0,
-            'highlightthickness': 0
+        "input": {
+            "bg": Theme.BACKGROUND,
+            "fg": Theme.FOREGROUND,
+            "font": ("Manrope", 12),
+            "insertbackground": Theme.FOREGROUND,
+            "border": 0,
+            "highlightthickness": 0,
         },
-        'input_icon': {
-            'bg': Theme.ACCENT,
+        "input_icon": {
+            "bg": Theme.INDIGO_300,
+            "padx": 5
         },
-        'button': {
-            'bg': Theme.saffron,
-            'fg': Theme.TEXT_PRIMARY,
-            'font': ('Manrope', 12),
-            'activebackground': Theme.carrot_orange,
-            'activeforeground': Theme.TEXT_PRIMARY,
-            'border': 0,
-            'cursor': 'hand2',
+        "input_label": {
+            "bg": Theme.BACKGROUND,
+            "fg": Theme.NEUTRAL_800,
+            "font": ("Manrope", 12),
+
+        },
+        "button": {
+            "bg": Theme.INDIGO_600,
+            "fg": Theme.NEUTRAL_50,
+            "font": ("Manrope", 12),
+            "activebackground": Theme.INDIGO_700,
+            "activeforeground": Theme.NEUTRAL_50,
+            "border": 0,
+            "cursor": "hand2",
             "padx": 20,
-            "pady": 10
+            "pady": 10,
         },
-        'button_secondary': {
-            'bg': Theme.TEXT_PRIMARY,
-            'fg': Theme.BACKGROUND,
-            'font': ('Manrope', 12),
-            'activebackground': Theme.carrot_orange,
-            'activeforeground': Theme.TEXT_PRIMARY,
-            'border': 0,
-            'cursor': 'hand2',
+        "button_secondary": {
+            "bg": Theme.FOREGROUND,
+            "fg": Theme.BACKGROUND,
+            "font": ("Manrope", 12),
+            "activebackground": Theme.NEUTRAL_800,
+            "activeforeground": Theme.NEUTRAL_50,
+            "border": 0,
+            "cursor": "hand2",
             "padx": 20,
-            "pady": 10
+            "pady": 10,
         },
-        
         "frame": {
             "bg": Theme.BACKGROUND,
         },
-
         "image": {
             "bg": Theme.BACKGROUND,
         },
-        "h1": {
-            "bg": Theme.BACKGROUND,
-            "fg": Theme.TEXT_PRIMARY,
-            "font": ("Manrope", 52, "bold")
-        },
-        "h3": {
-            "bg": Theme.BACKGROUND,
-            "fg": Theme.TEXT_PRIMARY,
-            "font": ("Manrope", 24)
-        }
+        "h1": {"bg": Theme.BACKGROUND, "fg": Theme.FOREGROUND, "font": ("Manrope", 52, "bold")},
+        "h3": {"bg": Theme.BACKGROUND, "fg": Theme.FOREGROUND, "font": ("Manrope", 24)},
     }
-    
+
     @classmethod
     def apply(cls, widget, style_name):
         if style_name not in cls.STYLES:
             raise ValueError(f"Style '{style_name}' not found")
-        
+
         widget.configure(**cls.STYLES[style_name])
-    
+
     @classmethod
     def get(cls, style_name):
         return cls.STYLES[style_name].copy()
-

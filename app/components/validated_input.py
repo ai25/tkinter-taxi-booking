@@ -2,13 +2,16 @@ import tkinter as tk
 from .input import Input
 from .style import StyleManager, Theme
 
+
 class ValidatedInput(Input):
-    def __init__(self, parent, placeholder="", validator=None):
-        super().__init__(parent, placeholder)
+    def __init__(
+        self, parent, placeholder="", width=None, icon="", validator=None, validate_event="<FocusOut>", **kwargs
+    ):
+        super().__init__(parent, placeholder, width, icon, **kwargs)
         self.validator = validator
         self.error_label = None
 
-        self.entry.bind('<KeyRelease>', self._validate)
+        self.entry.bind(validate_event, self._validate)
 
     def _validate(self, event=None):
         if not self.validator:
@@ -17,19 +20,13 @@ class ValidatedInput(Input):
         value = self.get()
         is_valid, error_msg = self.validator(value)
 
-        if not is_valid and value:  # Only show error if there's input
+        if not is_valid:
             self._show_error(error_msg)
-            self.input_container.configure(
-                highlightbackground='#EF4444',  
-                highlightthickness=2
-            )
+            self.input_container.configure(highlightbackground="#EF4444", highlightthickness=2)
         else:
             self._hide_error()
             if not self.placeholder_active:
-                self.input_container.configure(
-                    highlightbackground=Theme.ACCENT,
-                    highlightthickness=2
-                )
+                self.input_container.configure(highlightbackground=Theme.NEUTRAL_600, highlightthickness=2)
 
     def _show_error(self, message):
         if not self.error_label:
@@ -37,9 +34,9 @@ class ValidatedInput(Input):
                 self,
                 text=message,
                 bg=Theme.BACKGROUND,
-                fg='#EF4444',
+                fg="#EF4444",
             )
-            self.error_label.pack(anchor='w', pady=(3, 0))
+            self.error_label.pack(anchor="w", pady=(3, 0))
         else:
             self.error_label.configure(text=message)
 
@@ -47,4 +44,3 @@ class ValidatedInput(Input):
         if self.error_label:
             self.error_label.destroy()
             self.error_label = None
-

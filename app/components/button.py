@@ -1,6 +1,5 @@
 import tkinter as tk
 from .style import StyleManager
-import tkinter as tk
 
 class Button(tk.Button):
     def __init__(self, parent, variant=None, **kwargs):

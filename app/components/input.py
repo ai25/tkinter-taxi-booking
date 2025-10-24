@@ -4,15 +4,19 @@ import tkinter as tk
 from cairosvg import svg2png
 from PIL import Image, ImageTk
 
+from app.components.button import Button
+
 from .style import StyleManager, Theme
 
 
 class Input(tk.Frame):
-    def __init__(self, parent, placeholder="", width=None, icon="", **kwargs):
+    def __init__(self, parent, placeholder="", width=None, icon="", type="text", **kwargs):
         super().__init__(parent, bg=Theme.BACKGROUND, **kwargs)
 
         self.placeholder = placeholder
         self.placeholder_active = False
+        self.type = type
+        self.show_password = False
 
         # Container for border effect
         self.input_container = tk.Frame(
@@ -33,9 +37,18 @@ class Input(tk.Frame):
             self.input_container,
         )
         StyleManager.apply(self.entry, "input")
+        if type == "password":
+            self.show_password_button = Button(
+                self.input_container, icon="app/icons/ImEye.svg", command=self._toggle_show_password
+            )
+            StyleManager.apply(self.show_password_button, "show_password_button")
+            self.show_password_button.pack(side="right", anchor="e", padx=10)
+
         self.entry.pack(fill=tk.BOTH, expand=True, padx=15, pady=12)
 
         if width:
+            if type == "password":
+                width -= 5
             self.entry.configure(width=width)
 
         if placeholder:
@@ -49,6 +62,7 @@ class Input(tk.Frame):
         self.entry.insert(0, self.placeholder)
         self.entry.configure(fg=Theme.NEUTRAL_600)
         self.placeholder_active = True
+        self.should_show_password()
 
     def _hide_placeholder(self):
         if self.placeholder_active:
@@ -59,11 +73,31 @@ class Input(tk.Frame):
     def _on_focus_in(self, event):
         self.input_container.configure(highlightbackground=Theme.INDIGO_600, highlightthickness=2)
         self._hide_placeholder()
+        self.should_show_password()
 
     def _on_focus_out(self, event):
         self.input_container.configure(highlightbackground=Theme.NEUTRAL_600, highlightthickness=1)
         if not self.entry.get() and self.placeholder:
             self._show_placeholder()
+
+    def _toggle_show_password(self):
+        if self.show_password:
+            self.show_password_button.configure(icon="app/icons/ImEye.svg")
+            self.show_password = False
+        else:
+            self.show_password_button.configure(icon="app/icons/ImEyeBlocked.svg")
+            self.show_password = True
+        self.should_show_password()
+
+    def should_show_password(self):
+        if self.placeholder_active:
+            self.entry.configure(show="")
+            return
+        if self.type == "password":
+            if self.show_password:
+                self.entry.configure(show="")
+            else:
+                self.entry.configure(show="*")
 
     def on_change(self, cb):
         self.entry.bind("<KeyRelease>", cb)

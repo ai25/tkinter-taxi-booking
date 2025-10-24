@@ -1,3 +1,4 @@
+from datetime import datetime
 
 from app.database import Database
 from app.models import User
@@ -14,17 +15,21 @@ class UserRepository:
         with Database().get_connection() as conn:
             if user.id is None:
                 # Insert
+                now = int(datetime.now().timestamp())
+                user.created_at = now
+
                 cursor = conn.execute(
-                    "INSERT INTO user(full_name, email, password, phone, created_at) VALUES (?, ?, ?, ?, ?)",
-                    (user.full_name, user.email, user.password, user.phone, user.created_at),
+                    "INSERT INTO user(role, full_name, email, password, phone, created_at) VALUES (?, ?, ?, ?, ?, ?)",
+                    (user.role, user.full_name, user.email, user.password, user.phone, user.created_at),
                 )
                 conn.commit()
                 user.id = cursor.lastrowid
                 return user.id
+
             # Update
             conn.execute(
-                "UPDATE user SET full_name=?, email=?, password=?, phone=?, created_at=? WHERE id=?",
-                (user.full_name, user.email, user.password, user.phone, user.created_at, user.id),
+                "UPDATE user SET full_name=?, email=?, password=?, phone=? WHERE id=?",
+                (user.full_name, user.email, user.password, user.phone, user.id),
             )
             conn.commit()
             return user.id

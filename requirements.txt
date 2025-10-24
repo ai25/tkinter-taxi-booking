@@ -2,3 +2,4 @@ watchdog
 pyglet
 pillow
 cairosvg
+faker

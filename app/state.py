@@ -1,2 +1,5 @@
-class AppState():
-    is_logged_in = False
+from app.models import User
+
+
+class AppState:
+    user: User | None = None

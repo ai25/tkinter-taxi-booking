@@ -11,7 +11,7 @@ class ValidatedInput(Input):
         self.validator = validator
         self.error_label = None
 
-        self.entry.bind(validate_event, self._validate)
+        self.entry.bind(validate_event, self._validate, add="+")
 
     def _validate(self, event=None):
         if not self.validator:
@@ -22,7 +22,7 @@ class ValidatedInput(Input):
 
         if not is_valid:
             self._show_error(error_msg)
-            self.input_container.configure(highlightbackground="#EF4444", highlightthickness=2)
+            self.input_container.configure(highlightbackground=Theme.ERROR, highlightthickness=2)
         else:
             self._hide_error()
             if not self.placeholder_active:
@@ -34,7 +34,7 @@ class ValidatedInput(Input):
                 self,
                 text=message,
                 bg=Theme.BACKGROUND,
-                fg="#EF4444",
+                fg=Theme.ERROR,
             )
             self.error_label.pack(anchor="w", pady=(3, 0))
         else:

@@ -73,7 +73,7 @@ class Application(tk.Tk):
         self.configure(bg=Theme.BACKGROUND)
 
         FrameController.initialize(self)
-        FrameController.get().show_frame(MainPage)
+        FrameController.get().show_frame("MainPage")
 
 
 if __name__ == "__main__":

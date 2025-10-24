@@ -23,6 +23,7 @@ class Theme:
     INDIGO_950 = "#1e1b4b"
     BACKGROUND = NEUTRAL_50
     FOREGROUND = NEUTRAL_950
+    ERROR = "#EF4444"
 
 
 class StyleManager:
@@ -35,15 +36,11 @@ class StyleManager:
             "border": 0,
             "highlightthickness": 0,
         },
-        "input_icon": {
-            "bg": Theme.INDIGO_300,
-            "padx": 5
-        },
+        "input_icon": {"bg": Theme.INDIGO_300, "padx": 5},
         "input_label": {
             "bg": Theme.BACKGROUND,
             "fg": Theme.NEUTRAL_800,
             "font": ("Manrope", 12),
-
         },
         "button": {
             "bg": Theme.INDIGO_600,
@@ -52,6 +49,7 @@ class StyleManager:
             "activebackground": Theme.INDIGO_700,
             "activeforeground": Theme.NEUTRAL_50,
             "border": 0,
+            "highlightthickness": 0,
             "cursor": "hand2",
             "padx": 20,
             "pady": 10,
@@ -63,9 +61,28 @@ class StyleManager:
             "activebackground": Theme.NEUTRAL_800,
             "activeforeground": Theme.NEUTRAL_50,
             "border": 0,
+            "highlightthickness": 0,
             "cursor": "hand2",
             "padx": 20,
             "pady": 10,
+        },
+        "button_ghost": {
+            "bg": Theme.BACKGROUND,
+            "fg": Theme.NEUTRAL_800,
+            "font": ("Manrope", 12),
+            "activebackground": Theme.BACKGROUND,
+            "activeforeground": Theme.NEUTRAL_700,
+            "border": 0,
+            "highlightthickness": 0,
+            "cursor": "hand2",
+            "padx": 10,
+            "pady": 5,
+        },
+        "show_password_button": {
+            "bg": Theme.BACKGROUND,
+            "fg": Theme.FOREGROUND,
+            "activebackground": Theme.NEUTRAL_200,
+            "highlightthickness": 0,
         },
         "frame": {
             "bg": Theme.BACKGROUND,

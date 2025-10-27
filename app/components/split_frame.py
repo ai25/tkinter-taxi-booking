@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from .style import StyleManager, Theme
+from app.style import Theme
 
 
 class SplitFrame(tk.Frame):

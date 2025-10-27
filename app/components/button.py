@@ -4,7 +4,8 @@ import tkinter as tk
 from cairosvg import svg2png
 from PIL import Image, ImageTk
 
-from .style import StyleManager
+from app.style import StyleManager
+
 
 class Button(tk.Button):
     def __init__(self, parent, variant=None, icon=None, **kwargs):
@@ -15,11 +16,10 @@ class Button(tk.Button):
         if icon:
             self._add_icon(icon)
 
-
         StyleManager.apply(self, style_tag)
         self.configure(**kwargs)
 
-    def configure(self,icon=None,**kwargs):
+    def configure(self, icon=None, **kwargs):
         super().configure(**kwargs)
         if icon:
             self._add_icon(icon)
@@ -28,4 +28,3 @@ class Button(tk.Button):
         png_data = svg2png(url=icon)
         self.img = ImageTk.PhotoImage(Image.open(io.BytesIO(png_data)))
         self.configure(image=self.img, compound="left")
-

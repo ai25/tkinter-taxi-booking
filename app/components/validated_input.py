@@ -1,6 +1,6 @@
 import tkinter as tk
 from .input import Input
-from .style import StyleManager, Theme
+from app.style import StyleManager, Theme
 
 
 class ValidatedInput(Input):

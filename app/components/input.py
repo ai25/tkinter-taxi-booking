@@ -6,7 +6,7 @@ from PIL import Image, ImageTk
 
 from app.components.button import Button
 
-from .style import StyleManager, Theme
+from app.style import StyleManager, Theme
 
 
 class Input(tk.Frame):
@@ -99,8 +99,11 @@ class Input(tk.Frame):
             else:
                 self.entry.configure(show="*")
 
+    on_change_callbacks = []
+
     def on_change(self, cb):
         self.entry.bind("<KeyRelease>", cb)
+        self.on_change_callbacks.append(cb)
 
     def get(self):
         """Get the input value (returns empty string if placeholder is shown)"""
@@ -113,6 +116,8 @@ class Input(tk.Frame):
         self._hide_placeholder()
         self.entry.delete(0, tk.END)
         self.entry.insert(0, text)
+        for cb in self.on_change_callbacks:
+            cb()
 
     def clear(self):
         """Clear the input"""

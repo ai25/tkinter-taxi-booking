@@ -6,6 +6,7 @@ from app.components.frame import Frame
 from app.components.radiobutton import RadioButton
 from app.components.text import Text
 from app.components.validated_input import ValidatedInput
+from app.style import Theme
 from app.utils.faker import Fake
 from app.utils.validator import Validator
 
@@ -40,6 +41,9 @@ class SignUpForm(Frame):
 
     def _build_ui(self):
         container = Frame(self)
+
+        self.error_text = Text(container, "xs", text="", fg=Theme.ERROR)
+        self.error_text.pack()
 
         radio = Frame(container)
         radio.pack(pady=10)
@@ -107,4 +111,9 @@ class SignUpForm(Frame):
         self.password.should_show_password()
         self.repeat_password.set(user.password)
         self.repeat_password.should_show_password()
-        # self.master.master.master.update_button_state()  # type: ignore
+
+    def show_error(self, error=""):
+        self.error_text.configure(text=error)
+
+    def clear_error(self):
+        self.error_text.configure(text="")

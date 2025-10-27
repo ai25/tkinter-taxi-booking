@@ -27,7 +27,7 @@ class LogInForm(Frame):
     def _build_ui(self):
         container = Frame(self)
 
-        self.error_text = Text(container, "xs", text="Hello", fg=Theme.ERROR)
+        self.error_text = Text(container, "xs", text="", fg=Theme.ERROR)
         self.error_text.pack()
 
         Text(container, "input_label", text="Email Address").pack(anchor="w")
@@ -58,23 +58,3 @@ class LogInForm(Frame):
 
     def clear_error(self):
         self.error_text.configure(text="")
-
-        #
-        # self.autofill_button = Button(
-        #     container,
-        #     text="Autofill",
-        #     variant="ghost",
-        #     command=self._autofill,
-        # )
-        # self.autofill_button.pack(pady=(0, 10))
-
-    # def _autofill(self):
-    #     user = Fake().user("USER")
-    #     self.full_name.set(user.full_name)
-    #     self.email.set(user.email)
-    #     self.phone.set(user.phone)
-    #     self.password.set(user.password)
-    #     self.password.should_show_password()
-    #     self.repeat_password.set(user.password)
-    #     self.repeat_password.should_show_password()
-    #     # self.master.master.master.update_button_state()  # type: ignore

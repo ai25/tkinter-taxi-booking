@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS user (
     email TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     phone TEXT,
+    session_token TEXT,
     created_at INTEGER NOT NULL
 );
 
@@ -16,6 +17,8 @@ CREATE TABLE IF NOT EXISTS booking (
     vehicle TEXT NOT NULL,
     message TEXT,
     fare INTEGER NOT NULL,
+    payment_type TEXT NOT NULL,
+    paid INTEGER NOT NULL,
     cancelled INTEGER NOT NULL DEFAULT 0,
     assigned_driver_id INTEGER,
     user_id INTEGER NOT NULL,

@@ -9,6 +9,7 @@ class User:
     email: str
     password: str
     phone: str | None
+    session_token: str | None
     created_at: int  # Unix timestamp
 
 
@@ -21,6 +22,8 @@ class Booking:
     vehicle: str
     message: str | None
     fare: int  # Pence
+    payment_type: str  # CASH | CARD
+    paid: int  # 0 or 1 (boolean)
     cancelled: int  # 0 or 1 (boolean)
     assigned_driver_id: int | None
     user_id: int
@@ -28,6 +31,10 @@ class Booking:
     @property
     def is_cancelled(self) -> bool:
         return self.cancelled == 1
+
+    @property
+    def is_paid(self) -> bool:
+        return self.paid == 1
 
     @property
     def fare_pounds(self) -> float:

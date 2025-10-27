@@ -4,10 +4,10 @@ from app.components.image import Img, ImgProps
 from app.components.logo import Logo
 from app.components.split_frame import SplitFrame
 from app.components.text import Text
+from app.database.db import Database
+from app.database.models import User
 from app.frame_controller import FrameController
-from app.models import User
 from app.pages.sign_up.components.sign_up_form import SignUpForm
-from app.repositories.user_repository import UserRepository
 from app.state import AppState
 from app.style import Theme
 from app.utils.auth import Auth
@@ -16,6 +16,9 @@ from app.utils.auth import Auth
 class SignUpPage(Frame):
     def __init__(self, parent):
         super().__init__(parent)
+
+        self.db = Database()
+
         self.split_frame = SplitFrame(self)
 
         self.split_frame.left.grid(row=0, column=0, sticky="nsew", padx=10)
@@ -32,7 +35,9 @@ class SignUpPage(Frame):
 
         self.signup_button = Button(self.split_frame.left, text="Sign Up", state="disabled", command=self.sign_up)
         self.signup_button.pack()
+
         self.form.on_change(self.update_button_state)
+
         Text(self.split_frame.left, "xs", text="Already have an account?").pack(pady=(20, 0))
         Button(
             self.split_frame.left,
@@ -48,12 +53,17 @@ class SignUpPage(Frame):
             return
         values = self.form.values()
         password = Auth.hash_password(values.password)
-        user = User(None, values.role, values.full_name, values.email, password, values.phone, None)
-        user_repo = UserRepository()
-        id = user_repo.upsert(user)
-        if id:
+        user = User(None, values.role, values.full_name, values.email, password, values.phone, None, None)
+
+        user_id, error = self.db.user.upsert(user)
+
+        if user_id:
             AppState.user = user
+            session_token = self.db.user.create_session(user_id)
+            Auth.save_session(user_id, session_token)
             FrameController.get().show_frame("MainPage")
+        else:
+            self.form.show_error(error)
 
     def update_button_state(self, event=None):
         self.signup_button.config(state="normal" if self.form.is_valid() else "disabled")

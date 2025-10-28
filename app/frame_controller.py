@@ -5,7 +5,7 @@ from app.style import Theme
 from app.pages import get_page_class
 
 
-PageName = Literal["MainPage", "SignUpPage", "LogInPage"]
+PageName = Literal["MainPage", "SignUpPage", "LogInPage", "BookingPage"]
 
 
 class FrameController:

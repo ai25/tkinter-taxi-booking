@@ -5,7 +5,6 @@ from cairosvg import svg2png
 from PIL import Image, ImageTk
 
 from app.frame_controller import FrameController
-
 from app.style import StyleManager
 
 
@@ -22,4 +21,4 @@ class Logo(tk.Canvas):
         StyleManager.apply(self, "image")
 
         self.bind("<Button-1>", lambda e: FrameController.get().show_frame("MainPage"))
-        self.configure(cursor="hand2")
+        self.configure(cursor="hand2", **kwargs)

@@ -2,6 +2,9 @@ import bcrypt
 import json
 from pathlib import Path
 
+from app.frame_controller import FrameController
+from app.state import AppState
+
 
 class Auth:
     _SESSION_FILE = Path.cwd() / ".session"
@@ -27,3 +30,9 @@ class Auth:
     @classmethod
     def clear_session(cls):
         cls._SESSION_FILE.unlink(missing_ok=True)
+
+    @classmethod
+    def logout(cls):
+        AppState.user = None
+        cls.clear_session()
+        FrameController.get().show_frame("MainPage")

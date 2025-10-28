@@ -1,5 +1,6 @@
 from app.components.button import Button
 from app.components.frame import Frame
+from app.components.header import Header
 from app.components.image import Img, ImgProps
 from app.components.logo import Logo
 from app.components.split_frame import SplitFrame
@@ -23,7 +24,8 @@ class SignUpPage(Frame):
 
         self.split_frame.left.grid(row=0, column=0, sticky="nsew", padx=10)
 
-        Logo(self.split_frame.left).pack(anchor="nw", padx=20, pady=20)
+        header = Header(self.split_frame.left)
+        header.pack(anchor="nw", fill="x")
 
         Text(self.split_frame.left, "h3", text="Create an account").pack(pady=20)
 

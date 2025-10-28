@@ -22,10 +22,8 @@ class Application(tk.Tk):
 
         session = Auth.load_session()
         db = Database()
-        print(session)
         if session and "user_id" in session and "token" in session:
             user = db.user.get_by_session(session["user_id"], session["token"])
-            print(user)
             if user:
                 AppState.user = user
 

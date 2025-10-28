@@ -111,13 +111,14 @@ class Input(tk.Frame):
             return ""
         return self.entry.get()
 
-    def set(self, text):
+    def set(self, text, propagate=True):
         """Set the input value"""
         self._hide_placeholder()
         self.entry.delete(0, tk.END)
         self.entry.insert(0, text)
-        for cb in self.on_change_callbacks:
-            cb()
+        if propagate:
+            for cb in self.on_change_callbacks:
+                cb()
 
     def clear(self):
         """Clear the input"""

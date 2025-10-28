@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass
@@ -15,18 +16,18 @@ class User:
 
 @dataclass
 class Booking:
-    id: int | None
     pick_up_location: str
     drop_off_location: str
-    pick_up_time: int  # Unix timestamp
+    pick_up_time: int
     vehicle: str
-    message: str | None
-    fare: int  # Pence
-    payment_type: str  # CASH | CARD
-    paid: int  # 0 or 1 (boolean)
-    cancelled: int  # 0 or 1 (boolean)
-    assigned_driver_id: int | None
+    fare: int
+    payment_type: str
+    paid: int
+    cancelled: int
     user_id: int
+    id: int | None = None
+    message: str | None = None
+    assigned_driver_id: int | None = None
 
     @property
     def is_cancelled(self) -> bool:
@@ -39,3 +40,41 @@ class Booking:
     @property
     def fare_pounds(self) -> float:
         return self.fare / 100.0
+
+
+@dataclass
+class PartialBooking:
+    pick_up_location: str | None = None
+    drop_off_location: str | None = None
+    pick_up_time: int | None = None
+    vehicle: str | None = None
+    fare: int | None = None
+    payment_type: str | None = None
+    paid: int | None = None
+    cancelled: int | None = None
+    user_id: int | None = None
+    id: int | None = None
+    message: str | None = None
+    assigned_driver_id: int | None = None
+
+    def is_valid(self) -> bool:
+        return all(
+            [
+                self.pick_up_location is not None,
+                self.drop_off_location is not None,
+                self.pick_up_time is not None,
+                self.vehicle is not None,
+                self.fare is not None,
+                self.payment_type is not None,
+                self.paid is not None,
+                self.cancelled is not None,
+                self.user_id is not None,
+            ]
+        )
+
+    def update(self, values: dict[str, Any]) -> None:
+        for key, value in values.items():
+            if hasattr(self, key):
+                setattr(self, key, value)
+            else:
+                raise AttributeError(f"PartialBooking has no attribute '{key}'")

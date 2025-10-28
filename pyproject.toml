@@ -4,49 +4,52 @@ target-version = "py311"
 
 # Exclude common non-source directories
 exclude = [
-    ".git",
-    ".venv",
-    ".env",
-    "venv",
-    "__pycache__",
-    "build",
-    "dist",
-    "*.egg-info",
+  ".git",
+  ".venv",
+  ".env",
+  "venv",
+  "__pycache__",
+  "build",
+  "dist",
+  "*.egg-info",
 ]
 
 [tool.ruff.lint]
 # Enable rule categories
 select = [
-    "E",    # pycodestyle errors
-    "W",    # pycodestyle warnings
-    "F",    # pyflakes
-    "I",    # isort
-    "N",    # pep8-naming
-    "UP",   # pyupgrade
-    "B",    # flake8-bugbear
-    "C4",   # flake8-comprehensions
-    "SIM",  # flake8-simplify
-    "RET",  # flake8-return
-    "ARG",  # flake8-unused-arguments
-    "PTH",  # flake8-use-pathlib
+  "E",   # pycodestyle errors
+  "W",   # pycodestyle warnings
+  "F",   # pyflakes
+  "I",   # isort
+  "N",   # pep8-naming
+  "UP",  # pyupgrade
+  "B",   # flake8-bugbear
+  "C4",  # flake8-comprehensions
+  "SIM", # flake8-simplify
+  "RET", # flake8-return
+  "ARG", # flake8-unused-arguments
+  "PTH", # flake8-use-pathlib
 ]
 
 # Ignore specific rules
 ignore = [
-    # "E501",    # Line too long (let formatter handle it)
-    # "N802",    # Function name should be lowercase (allow camelCase for frameworks)
-    # "N803",    # Argument name should be lowercase
-    # "N806",    # Variable in function should be lowercase
-    # "B008",    # Do not perform function calls in argument defaults (common in FastAPI/Click)
-    # "RET504",  # Unnecessary variable assignment before return
-    # "ARG001",  # Unused function argument (common in callbacks/overrides)
-    # "ARG002",  # Unused method argument
-    # "SIM108",  # Use ternary operator (sometimes reduces clarity)
+  # "E501",    # Line too long (let formatter handle it)
+  # "N802",    # Function name should be lowercase (allow camelCase for frameworks)
+  # "N803",    # Argument name should be lowercase
+  # "N806",    # Variable in function should be lowercase
+  # "B008",    # Do not perform function calls in argument defaults (common in FastAPI/Click)
+  # "RET504",  # Unnecessary variable assignment before return
+  # "ARG001",  # Unused function argument (common in callbacks/overrides)
+  # "ARG002",  # Unused method argument
+  # "SIM108",  # Use ternary operator (sometimes reduces clarity)
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401", "F403"]  # Unused/wildcard imports in __init__ are often intentional
-"tests/**/*.py" = ["ARG", "N"]     # Relax naming and unused args in tests
+"__init__.py" = [
+  "F401",
+  "F403",
+] # Unused/wildcard imports in __init__ are often intentional
+"tests/**/*.py" = ["ARG", "N"] # Relax naming and unused args in tests
 
 [tool.ruff.lint.isort]
 known-first-party = ["your_package_name"]

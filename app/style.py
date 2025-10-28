@@ -93,12 +93,32 @@ class StyleManager:
         "frame": {
             "bg": Theme.BACKGROUND,
         },
+        "icon": {
+            "bg": Theme.BACKGROUND,
+            "fg": Theme.FOREGROUND,
+            "width": 40,
+            "height": 40,
+            "font": (
+                "Manrope",
+                12,
+            ),
+        },
         "image": {
             "bg": Theme.BACKGROUND,
             "highlightthickness": 0,
         },
+        "menu": {
+            "bg": Theme.NEUTRAL_50,
+            "fg": Theme.FOREGROUND,
+            "activebackground": Theme.NEUTRAL_200,
+            "font": ("Manrope", 12),
+            "relief": "flat",
+            "border": 0,
+        },
         "h1": {"bg": Theme.BACKGROUND, "fg": Theme.FOREGROUND, "font": ("Manrope", 52, "bold")},
         "h3": {"bg": Theme.BACKGROUND, "fg": Theme.FOREGROUND, "font": ("Manrope", 24)},
+        "md": {"bg": Theme.BACKGROUND, "fg": Theme.FOREGROUND, "font": ("Manrope", 14)},
+        "sm": {"bg": Theme.BACKGROUND, "fg": Theme.FOREGROUND, "font": ("Manrope", 12)},
         "xs": {"bg": Theme.BACKGROUND, "fg": Theme.FOREGROUND, "font": ("Manrope", 11)},
     }
 

@@ -1,10 +1,9 @@
-import tkinter as tk
-
 from app.components.frame import Frame
 from app.components.icon import Icon
 from app.components.image import Img, ImgProps, Resize
 from app.components.text import Text
 from app.style import Theme
+
 
 VEHICLES = {
     "SALOON": {
@@ -31,7 +30,7 @@ VEHICLES = {
         "passengers": 16,
         "luggage": 10,
         "image": "app/images/minibus.avif",
-        "image_width": 120,
+        "image_width": 130,
         "image_height": 100,
     },
 }
@@ -41,13 +40,13 @@ class VehiclesRadio:
     def __init__(self, parent):
         self.selected = None
         self.cards = {}
-        self.frame = tk.Frame(parent)
+        self.frame = Frame(parent)
         self._build_ui()
 
     def _build_ui(self):
         for index, (key, properties) in enumerate(VEHICLES.items()):
             print(len(VEHICLES) - 1)
-            card = Frame(self.frame, padx=5, pady=5)
+            card = Frame(self.frame, padx=5, pady=5, highlightthickness=2, highlightbackground=Theme.NEUTRAL_300)
 
             img = Img(
                 card,
@@ -75,7 +74,7 @@ class VehiclesRadio:
             luggage.pack(side="left")
             icons.pack()
 
-            content.pack(side="left", anchor="ne")
+            content.pack(side="right", anchor="ne")
 
             widgets = [card, img, name, content, description, icons, passengers, luggage]
 
@@ -93,15 +92,24 @@ class VehiclesRadio:
     def select(self, key):
         # Deselect previous
         if self.selected and self.selected in self.cards:
-            self.cards[self.selected]["frame"].config(bg=Theme.NEUTRAL_200)
+            self.cards[self.selected]["frame"].config(bg=Theme.BACKGROUND, highlightbackground=Theme.NEUTRAL_300)
             for widget in self.cards[self.selected]["widgets"]:
                 widget.config(bg=Theme.BACKGROUND)
 
         # Select new
         self.selected = key
-        self.cards[key]["frame"].config(bg=Theme.NEUTRAL_200)
+        self.cards[key]["frame"].config(bg=Theme.INDIGO_300, highlightbackground=Theme.INDIGO_400)
         for widget in self.cards[self.selected]["widgets"]:
-            widget.config(bg=Theme.NEUTRAL_200)
+            widget.config(bg=Theme.INDIGO_300)
+
+        # Bind callbacks
+        for cb in self.on_change_callbacks:
+            cb()
 
     def get(self):
         return self.selected
+
+    on_change_callbacks = []
+
+    def on_change(self, cb):
+        self.on_change_callbacks.append(cb)

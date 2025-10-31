@@ -8,7 +8,7 @@ from app.style import StyleManager
 
 
 class Icon(tk.Label):
-    def __init__(self, parent, icon, text="", resize: Resize = None, **kwargs):
+    def __init__(self, parent, icon, text="", compound="right", resize: Resize = None, **kwargs):
         super().__init__(parent)
 
         png_data = svg2png(url=icon)
@@ -18,4 +18,4 @@ class Icon(tk.Label):
         photo = ImageTk.PhotoImage(img)
         self.photo = photo
         StyleManager.apply(self, "icon")
-        self.configure(image=photo, text=text, compound="right", **kwargs)
+        self.configure(image=photo, text=text, compound=compound, **kwargs)

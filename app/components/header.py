@@ -21,4 +21,4 @@ class Header(Frame):
 
         btn = Button(self, variant="ghost", icon="app/icons/BsThreeDotsVertical.svg", command=show_popup)
         if AppState.user:
-            btn.pack(pady=10, side="right")
+            btn.pack(padx=20, pady=10, side="right")

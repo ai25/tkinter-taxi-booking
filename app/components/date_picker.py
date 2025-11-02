@@ -1,16 +1,18 @@
 import io
 import tkinter as tk
 from tkinter import ttk
-from PIL import Image, ImageTk
+
 from cairosvg import svg2png
+from PIL import Image, ImageTk
 from tkcalendar import DateEntry
+
 from app.components.frame import Frame
 from app.style import StyleManager, Theme
 
 
 class DatePicker(Frame):
     def __init__(self, parent=None, icon="", width=50, **kwargs):
-        super().__init__(parent)
+        super().__init__(parent, **kwargs)
 
         style = ttk.Style()
         style.configure(
@@ -47,8 +49,14 @@ class DatePicker(Frame):
     def get(self):
         return self.picker.get_date()
 
-    on_change_callbacks = []
+    def set(self, date, propagate=True):
+        self.picker.set_date(date)
+        if propagate:
+            for cb in self._on_change_callbacks:
+                cb(None)
+
+    _on_change_callbacks = []
 
     def on_change(self, cb):
         self.picker.bind("<KeyRelease>", cb)
-        self.on_change_callbacks.append(cb)
+        self._on_change_callbacks.append(cb)

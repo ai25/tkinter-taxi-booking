@@ -35,7 +35,7 @@ class PaymentTypeRadio(Frame):
 
             self.cards[key] = {"frame": frame, "widgets": widgets}
 
-    def select(self, key):
+    def select(self, key, propagate=True):
         # Deselect previous
         if self.selected and self.selected in self.cards:
             self.cards[self.selected]["frame"].config(bg=Theme.BACKGROUND, highlightbackground=Theme.NEUTRAL_300)
@@ -44,13 +44,13 @@ class PaymentTypeRadio(Frame):
 
         # Select new
         self.selected = key
-        self.cards[key]["frame"].config(bg=Theme.INDIGO_300, highlightbackground=Theme.INDIGO_400)
+        self.cards[key]["frame"].config(bg=Theme.INDIGO_200, highlightbackground=Theme.INDIGO_300)
         for widget in self.cards[self.selected]["widgets"]:
-            widget.config(bg=Theme.INDIGO_300)
+            widget.config(bg=Theme.INDIGO_200)
 
-        # Bind callbacks
-        for cb in self.on_change_callbacks:
-            cb()
+        if propagate:
+            for cb in self.on_change_callbacks:
+                cb()
 
     def get(self):
         return self.selected

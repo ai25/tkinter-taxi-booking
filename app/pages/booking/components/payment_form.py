@@ -1,16 +1,10 @@
-from datetime import time
 from types import SimpleNamespace
 
 from app.components.button import Button
-from app.components.date_picker import DatePicker
 from app.components.frame import Frame
 from app.components.hr import HorizontalRule
 from app.components.text import Text
-from app.components.time_picker import TimePicker
 from app.components.validated_input import ValidatedInput
-from app.pages.booking.components.payment_type_radio import PaymentTypeRadio
-from app.pages.booking.components.vehicles_radio import VehiclesRadio
-from app.state import AppState
 from app.style import Theme
 from app.utils.faker import Fake
 from app.utils.validator import Validator
@@ -20,10 +14,6 @@ class PaymentForm(Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self._build_ui()
-        # if AppState.booking.pick_up_location:
-        #     self.pick_up.set(AppState.booking.pick_up_location, propagate=False)  # we want to avoid infinite loop
-        # if AppState.booking.drop_off_location:
-        #     self.drop_off.set(AppState.booking.drop_off_location, propagate=False)
 
     def on_change(self, cb):
         self.name.on_change(cb)
@@ -33,13 +23,20 @@ class PaymentForm(Frame):
         self.security_code.on_change(cb)
 
     def values(self):
-        return None
-        # return SimpleNamespace(
-        #     date=self.date.get(), time=self.time.get(), vehicle=self.vehicle.get(), payment_type=self.payment_type.get()
-        # )
+        return SimpleNamespace(
+            name=self.name.get(),
+            card=self.card.get(),
+            expiry_month=self.expiry_month.get(),
+            expiry_year=self.expiry_year.get(),
+            security_code=self.security_code.get(),
+        )
 
     def is_valid(self):
-        return True
+        name_valid, _ = Validator.is_empty(self.name.get())
+        card_number_valid, _ = Validator.validate_card(self.card.get())
+        expiry_date_valid, _ = Validator.validate_card_expiry(self.expiry_month.get(), self.expiry_year.get())
+        security_code_valid, _ = Validator.validate_security_code(self.security_code.get())
+        return name_valid and card_number_valid and expiry_date_valid and security_code_valid
 
     def _build_ui(self):
         Text(self, "lg", text="Payment").pack(anchor="nw", pady=(10, 0))
@@ -89,7 +86,7 @@ class PaymentForm(Frame):
         expiry_container.pack(side="left", padx=(0, 10))
 
         security_container = Frame(exp_sec, width=20)
-        Text(security_container, "input_label", text="Expiry date").pack(anchor="w", pady=5)
+        Text(security_container, "input_label", text="Security code").pack(anchor="w", pady=5)
         self.security_code = ValidatedInput(
             security_container,
             placeholder="xxx",
@@ -108,6 +105,13 @@ class PaymentForm(Frame):
         error_container.pack(
             anchor="nw",
         )
+        self.autofill_button = Button(
+            self,
+            text="Autofill",
+            variant="ghost",
+            command=self._autofill,
+        )
+        self.autofill_button.pack()
         self.expiry_year.on_change(self._validate_card_expiry)
         self.security_code.on_change(self._validate_security_code)
 
@@ -127,6 +131,9 @@ class PaymentForm(Frame):
             self.sec_error.configure(text=error)
 
     def _autofill(self):
-        booking = Fake().booking()
-        # self.pick_up.set(booking.pick_up_location)
-        # self.drop_off.set(booking.drop_off_location)
+        card = Fake().card()
+        self.name.set(card.name)
+        self.card.set(card.card)
+        self.expiry_month.set(card.expiry_month)
+        self.expiry_year.set(card.expiry_year)
+        self.security_code.set(card.security_code)

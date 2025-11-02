@@ -32,3 +32,7 @@ def format_timestamp(ts: int):
     dt = datetime.fromtimestamp(float(ts))
 
     return dt.strftime("%a, %b %d %Y, %H:%M")
+
+
+def timestamp_to_datetime(ts: int):
+    return datetime.fromtimestamp(float(ts))

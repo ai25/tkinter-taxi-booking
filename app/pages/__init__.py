@@ -7,6 +7,9 @@ if TYPE_CHECKING:
     from app.pages.main.page import MainPage
     from app.pages.sign_up.page import SignUpPage
     from app.pages.booking.page import BookingPage
+    from app.pages.booking_confirm.page import BookingConfirmPage
+    from app.pages.user_bookings.page import UserBookingsPage
+    from app.pages.user_booking.page import UserBookingPage
 
 _registry: dict[str, type[tk.Frame]] = {}
 
@@ -22,8 +25,14 @@ def _load_pages():
     from app.pages.main.page import MainPage
     from app.pages.sign_up.page import SignUpPage
     from app.pages.booking.page import BookingPage
+    from app.pages.booking_confirm.page import BookingConfirmPage
+    from app.pages.user_bookings.page import UserBookingsPage
+    from app.pages.user_booking.page import UserBookingPage
 
     _registry["MainPage"] = MainPage
     _registry["SignUpPage"] = SignUpPage
     _registry["LogInPage"] = LogInPage
     _registry["BookingPage"] = BookingPage
+    _registry["BookingConfirmPage"] = BookingConfirmPage
+    _registry["UserBookingsPage"] = UserBookingsPage
+    _registry["UserBookingPage"] = UserBookingPage

@@ -102,7 +102,7 @@ class Input(tk.Frame):
     on_change_callbacks = []
 
     def on_change(self, cb):
-        self.entry.bind("<KeyRelease>", cb)
+        self.entry.bind("<KeyRelease>", cb, add="+")
         self.on_change_callbacks.append(cb)
 
     def get(self):
@@ -118,7 +118,7 @@ class Input(tk.Frame):
         self.entry.insert(0, text)
         if propagate:
             for cb in self.on_change_callbacks:
-                cb()
+                cb(None)
 
     def clear(self):
         """Clear the input"""

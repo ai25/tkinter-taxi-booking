@@ -2,6 +2,7 @@ from app.components.button import Button
 from app.components.frame import Frame
 from app.components.logo import Logo
 from app.components.menu import Menu
+from app.frame_controller import FrameController
 from app.state import AppState
 from app.utils.auth import Auth
 
@@ -22,3 +23,9 @@ class Header(Frame):
         btn = Button(self, variant="ghost", icon="app/icons/BsThreeDotsVertical.svg", command=show_popup)
         if AppState.user:
             btn.pack(padx=20, pady=10, side="right")
+            Button(
+                self,
+                variant="ghost",
+                text="My Bookings",
+                command=lambda: FrameController.get().show_frame("UserBookingsPage"),
+            ).pack(anchor="e", side="right")

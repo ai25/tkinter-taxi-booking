@@ -1,13 +1,10 @@
-import tkinter as tk
-from tktimepicker import SpinTimePickerModern, SpinTimePickerOld
-from tktimepicker import constants
-
 import io
 import tkinter as tk
-from tkinter import ttk
-from PIL import Image, ImageTk
+
 from cairosvg import svg2png
-from tkcalendar import DateEntry
+from PIL import Image, ImageTk
+from tktimepicker import SpinTimePickerOld, constants
+
 from app.components.frame import Frame
 from app.style import StyleManager, Theme
 
@@ -53,7 +50,17 @@ class TimePicker(Frame):
         except (ValueError, AttributeError):
             return "00:00"
 
-    on_change_callbacks = []
+    def set(self, hh, mm, propagate=True):
+        self.picker._24HrsTime.delete(0, "end")
+        self.picker._24HrsTime.insert(0, hh)
+        self.picker._minutes.delete(0, "end")
+        self.picker._minutes.insert(0, mm)
+
+        if propagate:
+            for cb in self._on_change_callbacks:
+                cb(None)
+
+    _on_change_callbacks = []
 
     def on_change(self, cb):
         # Spinbox returns the value before current change is processed
@@ -67,4 +74,5 @@ class TimePicker(Frame):
         self.picker._minutes.bind("<ButtonRelease-1>", delayed_callback)
         self.picker._24HrsTime.bind("<KeyRelease>", delayed_callback)
         self.picker._minutes.bind("<KeyRelease>", delayed_callback)
-        self.on_change_callbacks.append(cb)
+
+        self._on_change_callbacks.append(cb)

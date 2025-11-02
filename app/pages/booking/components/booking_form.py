@@ -1,5 +1,7 @@
-from datetime import time
+from datetime import datetime, timedelta
 from types import SimpleNamespace
+
+from faker import Faker
 
 from app.components.button import Button
 from app.components.date_picker import DatePicker
@@ -8,11 +10,9 @@ from app.components.hr import HorizontalRule
 from app.components.text import Text
 from app.components.textbox import Textbox
 from app.components.time_picker import TimePicker
-from app.components.validated_input import ValidatedInput
 from app.pages.booking.components.payment_type_radio import PaymentTypeRadio
 from app.pages.booking.components.vehicles_radio import VehiclesRadio
-from app.state import AppState
-from app.utils.faker import Fake
+from app.style import Theme
 from app.utils.validator import Validator
 
 
@@ -20,10 +20,6 @@ class BookingForm(Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self._build_ui()
-        # if AppState.booking.pick_up_location:
-        #     self.pick_up.set(AppState.booking.pick_up_location, propagate=False)  # we want to avoid infinite loop
-        # if AppState.booking.drop_off_location:
-        #     self.drop_off.set(AppState.booking.drop_off_location, propagate=False)
 
     def on_change(self, cb):
         self.date.on_change(lambda e: cb(key="date", value=self.date.get()))
@@ -42,11 +38,15 @@ class BookingForm(Frame):
         )
 
     def is_valid(self):
-        date_valid, _ = Validator.is_empty(self.date.get())
-        time_valid, _ = Validator.is_empty(self.time.get())
+        datetime_valid, dt_error = Validator.validate_pickup_date(self.date.get(), self.time.get())
         vehicle_valid, _ = Validator.is_empty(self.vehicle.get())
-        payment_valid, _ = Validator.is_empty(self.payment_type.get())
-        return date_valid and time_valid and vehicle_valid and payment_valid
+        payment_type_valid, _ = Validator.is_empty(self.payment_type.get())
+
+        if dt_error:
+            self.date_title.configure(text=dt_error, fg=Theme.ERROR)
+        else:
+            self.date_title.configure(text="Pick Up Date:", fg=Theme.FOREGROUND)
+        return datetime_valid and vehicle_valid and payment_type_valid
 
     def _build_ui(self):
         Text(self, "lg", text="When should we pick you up?").pack(anchor="nw", pady=(10, 0))
@@ -55,7 +55,8 @@ class BookingForm(Frame):
 
         date_time = Frame(self)
         date_container = Frame(date_time, width=35)
-        Text(date_container, "sm", text="Pick Up Date:").pack(anchor="nw")
+        self.date_title = Text(date_container, "sm", text="Pick Up Date:")
+        self.date_title.pack(anchor="nw")
         self.date = DatePicker(date_container, icon="app/icons/FaRegularCalendar.svg", width=35)
         self.date.pack()
         time_container = Frame(date_time, width=35)
@@ -87,9 +88,24 @@ class BookingForm(Frame):
         HorizontalRule(self).pack(fill="both", pady=(5, 10))
 
         self.message = Textbox(self)
-        self.message.pack(anchor="nw", pady=(0, 40))
+        self.message.pack(anchor="nw", pady=(0, 0))
+
+        self.autofill_button = Button(
+            self,
+            text="Autofill",
+            variant="ghost",
+            command=self._autofill,
+        )
+        self.autofill_button.pack(pady=(0, 40))
+
+    def set_init_date(self):
+        dt = datetime.now() + timedelta(days=1)  # tomorrow
+        self.date.set(dt)
+        self.time.set(dt.hour, dt.minute)
 
     def _autofill(self):
-        booking = Fake().booking()
-        # self.pick_up.set(booking.pick_up_location)
-        # self.drop_off.set(booking.drop_off_location)
+        faker = Faker()
+        self.set_init_date()
+        self.vehicle.select("SALOON")
+        self.payment_type.select("CARD")
+        self.message.set(faker.text(max_nb_chars=120))

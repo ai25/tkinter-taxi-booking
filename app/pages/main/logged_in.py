@@ -2,14 +2,11 @@ from app.components.button import Button
 from app.components.frame import Frame
 from app.components.header import Header
 from app.components.image import Img, ImgProps
-from app.components.logo import Logo
-from app.components.menu import Menu
 from app.components.split_frame import SplitFrame
 from app.components.text import Text
 from app.frame_controller import FrameController
 from app.pages.main.components.address_form import AddressForm
 from app.state import AppState
-from app.utils.auth import Auth
 
 
 class LoggedIn(Frame):
@@ -49,5 +46,5 @@ class LoggedIn(Frame):
         self.split_frame.right = Img(self.split_frame, "app/images/home1.jpg", ImgProps(x=-200, anchor="nw"))
         self.split_frame.right.grid(row=0, column=1, sticky="nsew")
 
-    def _on_form_change(self, event=None):
+    def _on_form_change(self, event=None):  # noqa: ARG002
         self.get_quote_button.config(state="normal" if self.form.is_valid() else "disabled")

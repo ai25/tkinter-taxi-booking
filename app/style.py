@@ -124,6 +124,12 @@ class StyleManager:
             "highlightthickness": 1,
             "highlightbackground": Theme.NEUTRAL_400,
         },
+        "booking_card": {
+            "bg": Theme.BACKGROUND,
+            "border": 0,
+            "highlightthickness": 1,
+            "highlightbackground": Theme.NEUTRAL_400,
+        },
         "h1": {"bg": Theme.BACKGROUND, "fg": Theme.FOREGROUND, "font": ("Manrope", 52, "bold")},
         "h3": {"bg": Theme.BACKGROUND, "fg": Theme.FOREGROUND, "font": ("Manrope", 24)},
         "lg": {"bg": Theme.BACKGROUND, "fg": Theme.FOREGROUND, "font": ("Manrope", 16)},

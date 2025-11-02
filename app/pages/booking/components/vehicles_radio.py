@@ -45,7 +45,6 @@ class VehiclesRadio:
 
     def _build_ui(self):
         for index, (key, properties) in enumerate(VEHICLES.items()):
-            print(len(VEHICLES) - 1)
             card = Frame(self.frame, padx=5, pady=5, highlightthickness=2, highlightbackground=Theme.NEUTRAL_300)
 
             img = Img(
@@ -89,7 +88,7 @@ class VehiclesRadio:
         self.frame.rowconfigure(0, weight=1, minsize=150)
         self.frame.rowconfigure(1, weight=1, minsize=150)
 
-    def select(self, key):
+    def select(self, key, propagate=True):
         # Deselect previous
         if self.selected and self.selected in self.cards:
             self.cards[self.selected]["frame"].config(bg=Theme.BACKGROUND, highlightbackground=Theme.NEUTRAL_300)
@@ -98,13 +97,13 @@ class VehiclesRadio:
 
         # Select new
         self.selected = key
-        self.cards[key]["frame"].config(bg=Theme.INDIGO_300, highlightbackground=Theme.INDIGO_400)
+        self.cards[key]["frame"].config(bg=Theme.INDIGO_200, highlightbackground=Theme.INDIGO_300)
         for widget in self.cards[self.selected]["widgets"]:
-            widget.config(bg=Theme.INDIGO_300)
+            widget.config(bg=Theme.INDIGO_200)
 
-        # Bind callbacks
-        for cb in self.on_change_callbacks:
-            cb()
+        if propagate:
+            for cb in self.on_change_callbacks:
+                cb()
 
     def get(self):
         return self.selected

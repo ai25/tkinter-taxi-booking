@@ -5,7 +5,6 @@ from app.components.frame import Frame
 from app.components.text import Text
 from app.components.validated_input import ValidatedInput
 from app.state import AppState
-from app.style import Theme
 from app.utils.faker import Fake
 from app.utils.validator import Validator
 
@@ -44,7 +43,7 @@ class AddressForm(Frame):
         )
         self.pick_up.pack(pady=(5, 15))
 
-        self.pick_up.on_change(lambda: AppState.booking.update({"pick_up_location": self.pick_up.get()}))
+        self.pick_up.on_change(lambda e: AppState.booking.update({"pick_up_location": self.pick_up.get()}))
 
         Text(container, "input_label", text="Drop Off").pack(anchor="w")
         self.drop_off = ValidatedInput(
@@ -56,7 +55,7 @@ class AddressForm(Frame):
         )
         self.drop_off.pack(pady=(5, 15))
 
-        self.drop_off.on_change(lambda: AppState.booking.update({"drop_off_location": self.drop_off.get()}))
+        self.drop_off.on_change(lambda e: AppState.booking.update({"drop_off_location": self.drop_off.get()}))
 
         self.autofill_button = Button(
             container,

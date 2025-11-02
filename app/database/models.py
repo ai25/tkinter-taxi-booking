@@ -15,6 +15,17 @@ class User:
 
 
 @dataclass
+class PaymentMethod:
+    card_name: str
+    card_number: str
+    exp_month: int
+    exp_year: int
+    security_code: int
+    id: int | None = None
+    user_id: int | None = None
+
+
+@dataclass
 class Booking:
     pick_up_location: str
     drop_off_location: str

@@ -11,5 +11,15 @@ class Textbox(tk.Text):
     def get(self):
         return super().get("1.0", "end-1c")
 
+    def set(self, text, propagate=True):
+        self.delete("1.0", "end")
+        self.insert("1.0", text)
+        if propagate:
+            for cb in self._on_change_callbacks:
+                cb(None)
+
+    _on_change_callbacks = []
+
     def on_change(self, cb):
         self.bind("<KeyRelease>", cb)
+        self._on_change_callbacks.append(cb)

@@ -1,5 +1,7 @@
 import datetime
 
+from app.utils.datetime import to_timestamp
+
 
 class Validator:
     @classmethod
@@ -30,6 +32,17 @@ class Validator:
     def validate_repeat_password(cls, value, password):
         if value != password:
             return False, "Passwords must match"
+        return True, ""
+
+    @classmethod
+    def validate_pickup_date(cls, date, time):
+        dt = to_timestamp(date, time)
+        if not dt:
+            return False, "Invalid pickup date"
+
+        now = int(datetime.datetime.now().timestamp())
+        if now >= dt:
+            return False, "Pickup date cannot be in the past"
         return True, ""
 
     @classmethod

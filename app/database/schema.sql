@@ -26,6 +26,18 @@ CREATE TABLE IF NOT EXISTS booking (
     FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
+CREATE TABLE IF NOT EXISTS payment_method (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    card_name TEXT NOT NULL,
+    card_number TEXT NOT NULL UNIQUE,
+    exp_month INTEGER NOT NULL,
+    exp_year INTEGER NOT NULL,
+    security_code INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id)
+    ON DELETE CASCADE
+);
+
 CREATE INDEX IF NOT EXISTS idx_booking_user 
     ON booking(user_id);
 CREATE INDEX IF NOT EXISTS idx_booking_driver 

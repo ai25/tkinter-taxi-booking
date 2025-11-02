@@ -3,7 +3,7 @@ import sqlite3
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from app.database.models import User
+from app.database.models import PaymentMethod, User
 from app.utils.auth import Auth
 
 
@@ -19,15 +19,6 @@ class UserQueries:
         try:
             with self.db.get_connection() as conn:
                 cursor = conn.execute("SELECT * FROM user WHERE id = ?", (user_id,))
-                row = cursor.fetchone()
-                return (User(**dict(row)) if row else None, None)
-        except sqlite3.Error as e:
-            return (None, str(e))
-
-    def get_by_email(self, email: str):
-        try:
-            with self.db.get_connection() as conn:
-                cursor = conn.execute("SELECT * FROM user WHERE email = ?", (email,))
                 row = cursor.fetchone()
                 return (User(**dict(row)) if row else None, None)
         except sqlite3.Error as e:
@@ -91,4 +82,41 @@ class UserQueries:
 
         except sqlite3.Error as e:
             print(f"Could not get user by session: {e}")
+            return None
+
+    def get_payment_methods(self, user_id: int) -> list[PaymentMethod]:
+        try:
+            with self.db.get_connection() as conn:
+                cursor = conn.execute("SELECT * FROM payment_method WHERE user_id = ?", (user_id,))
+                rows = cursor.fetchall()
+                return [PaymentMethod(**dict(row)) for row in rows]
+
+        except sqlite3.Error as e:
+            print(f"Could not get payment methods: {e}")
+            return []
+
+    def save_payment_method(
+        self,
+        payment_method: PaymentMethod,
+        user_id: int,
+    ):
+        try:
+            with self.db.get_connection() as conn:
+                cursor = conn.execute(
+                    """INSERT INTO payment_method(card_name, card_number, exp_month, exp_year, security_code, user_id) 
+                    VALUES (?, ?, ?, ?, ?, ?)""",
+                    (
+                        payment_method.card_name,
+                        payment_method.card_number,
+                        payment_method.exp_month,
+                        payment_method.exp_year,
+                        payment_method.security_code,
+                        user_id,
+                    ),
+                )
+                conn.commit()
+                return cursor.lastrowid
+
+        except sqlite3.Error as e:
+            print(f"Could not get payment methods: {e}")
             return None

@@ -1,11 +1,13 @@
 import tkinter as tk
 from typing import Literal
 
-from app.style import Theme
 from app.pages import get_page_class
+from app.style import Theme
 
 
-PageName = Literal["MainPage", "SignUpPage", "LogInPage", "BookingPage"]
+PageName = Literal[
+    "MainPage", "SignUpPage", "LogInPage", "BookingPage", "BookingConfirmPage", "UserBookingsPage", "UserBookingPage"
+]
 
 
 class FrameController:
@@ -29,8 +31,10 @@ class FrameController:
         self.root.grid_rowconfigure(0, weight=1)
         self.root.grid_columnconfigure(0, weight=1)
 
-    def show_frame(self, frame_name: PageName):
+    def show_frame(self, frame_name: PageName, params=None):
         frame_class = get_page_class(frame_name)
-        frame = frame_class(self.root)
+
+        frame = frame_class(self.root, params) if params is not None else frame_class(self.root)
+
         frame.grid(row=0, column=0, sticky="nsew")
         frame.tkraise()

@@ -28,7 +28,9 @@ class Application(tk.Tk):
                 AppState.user = user
 
         FrameController.initialize(self)
-        FrameController.get().show_frame("MainPage")
+        # FrameController.get().show_frame("MainPage")
+        # FrameController.get().show_frame("UserBookingPage", {"id": 1})
+        FrameController.get().show_frame("BookingPage")
 
 
 if __name__ == "__main__":

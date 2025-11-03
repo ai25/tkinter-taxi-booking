@@ -37,7 +37,7 @@ class BookingQueries:
                 )
                 return ([Booking(**dict(row)) for row in cursor.fetchall()], None)
         except sqlite3.Error as e:
-            return (None, str(e))
+            return ([], str(e))
 
     def get_all(self):
         try:
@@ -64,6 +64,30 @@ class BookingQueries:
                         booking.paid or 0,
                         booking.fare,
                         booking.user_id,
+                    ),
+                )
+                conn.commit()
+                return (cursor.lastrowid, "")
+        except sqlite3.Error as e:
+            return (None, str(e))
+
+    def update(self, booking: Booking | PartialBooking):
+        try:
+            with self.db.get_connection() as conn:
+                cursor = conn.execute(
+                    """UPDATE booking SET pick_up_location = ?, drop_off_location = ?, pick_up_time = ?, 
+                    vehicle = ?, message = ?, fare = ?, cancelled = ?, assigned_driver_id = ?
+                    WHERE id = ?""",
+                    (
+                        booking.pick_up_location,
+                        booking.drop_off_location,
+                        booking.pick_up_time,
+                        booking.vehicle,
+                        booking.message,
+                        booking.fare,
+                        booking.cancelled,
+                        booking.assigned_driver_id,
+                        booking.id,
                     ),
                 )
                 conn.commit()

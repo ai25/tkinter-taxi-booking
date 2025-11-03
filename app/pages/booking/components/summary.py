@@ -22,7 +22,8 @@ class Summary(Frame):
             column=1,
             sticky="w",
         )
-        Text(pick_up_container, "sm", text=AppState.booking.pick_up_location).grid(
+        self.pick_up = Text(pick_up_container, "sm", text=AppState.booking.pick_up_location)
+        self.pick_up.grid(
             row=1,
             column=1,
             sticky="nw",
@@ -38,7 +39,8 @@ class Summary(Frame):
             column=1,
             sticky="w",
         )
-        Text(drop_off_container, "sm", text=AppState.booking.drop_off_location).grid(
+        self.drop_off = Text(drop_off_container, "sm", text=AppState.booking.drop_off_location)
+        self.drop_off.grid(
             row=1,
             column=1,
             sticky="nw",

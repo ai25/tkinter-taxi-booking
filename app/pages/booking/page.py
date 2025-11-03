@@ -163,6 +163,7 @@ class BookingPage(Frame):
                 self.payment_form.pack(anchor="nw", fill="x")
                 self.payment_methods_selector.pack_forget()
         else:
+            self.payment_methods_selector.pack_forget()
             self.payment_form.pack_forget()
         pass
 
@@ -211,16 +212,16 @@ class BookingPage(Frame):
             if not payment_successful:
                 self.error_text.configure(text="Payment failed. Please try a different card")
                 return
-            else:
-                if new_payment_method:
-                    payment_method_id = db.user.save_payment_method(
-                        PaymentMethod(
-                            pm.name, pm.card, int(pm.expiry_month), int(pm.expiry_year), int(pm.security_code)
-                        ),
-                        AppState.user.id,
-                    )
-                    print("payment_method_id", payment_method_id)
-                AppState.booking.update({"paid": 1})
+
+            if new_payment_method:
+                payment_method_id = db.user.save_payment_method(
+                    PaymentMethod(pm.name, pm.card, int(pm.expiry_month), int(pm.expiry_year), int(pm.security_code)),
+                    AppState.user.id,
+                )
+                print("payment_method_id", payment_method_id)
+            AppState.booking.update({"paid": 1})
+
+            MockApi().send_email("BOOKING_CONFIRM", AppState.user.email)
 
         booking_id, err = db.booking.create(AppState.booking)
 

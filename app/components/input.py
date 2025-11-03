@@ -54,8 +54,8 @@ class Input(tk.Frame):
         if placeholder:
             self._show_placeholder()
 
-        self.entry.bind("<FocusIn>", self._on_focus_in)
-        self.entry.bind("<FocusOut>", self._on_focus_out)
+        self.on_focus_in(self._on_focus_in)
+        self.on_focus_out(self._on_focus_out)
 
     def _show_placeholder(self):
         self.entry.delete(0, tk.END)
@@ -70,10 +70,22 @@ class Input(tk.Frame):
             self.entry.configure(fg=Theme.FOREGROUND)
             self.placeholder_active = False
 
+    on_focus_in_callbacks = []
+
+    def on_focus_in(self, cb):
+        self.entry.bind("<FocusIn>", cb, add="+")
+        self.on_focus_in_callbacks.append(cb)
+
     def _on_focus_in(self, event):
         self.input_container.configure(highlightbackground=Theme.INDIGO_600, highlightthickness=2)
         self._hide_placeholder()
         self.should_show_password()
+
+    on_focus_out_callbacks = []
+
+    def on_focus_out(self, cb):
+        self.entry.bind("<FocusOut>", cb, add="+")
+        self.on_focus_out_callbacks.append(cb)
 
     def _on_focus_out(self, event):
         self.input_container.configure(highlightbackground=Theme.NEUTRAL_600, highlightthickness=1)

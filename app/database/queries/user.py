@@ -24,6 +24,16 @@ class UserQueries:
         except sqlite3.Error as e:
             return (None, str(e))
 
+    def get_by_role(self, role: str):
+        try:
+            with self.db.get_connection() as conn:
+                cursor = conn.execute("SELECT * FROM user WHERE role = ?", (role,))
+                rows = cursor.fetchall()
+                return [User(**dict(row)) for row in rows] if rows else [], None
+
+        except sqlite3.Error as e:
+            return ([], str(e))
+
     def upsert(self, user: User):
         try:
             with self.db.get_connection() as conn:

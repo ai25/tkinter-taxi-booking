@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Any
 
 
@@ -45,12 +46,24 @@ class Booking:
         return self.cancelled == 1
 
     @property
+    def is_completed(self) -> bool:
+        return self.pick_up_time < int(datetime.now().timestamp())
+
+    @property
     def is_paid(self) -> bool:
         return self.paid == 1
 
     @property
     def fare_pounds(self) -> float:
         return self.fare / 100.0
+
+    @property
+    def subtotal_pounds(self) -> float:
+        return (self.fare - (self.fare * 0.2)) / 100.0
+
+    @property
+    def vat_pounds(self) -> float:
+        return (self.fare * 0.2) / 100.0
 
 
 @dataclass

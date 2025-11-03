@@ -13,7 +13,7 @@ class Textbox(tk.Text):
 
     def set(self, text, propagate=True):
         self.delete("1.0", "end")
-        self.insert("1.0", text)
+        self.insert("1.0", text or "")
         if propagate:
             for cb in self._on_change_callbacks:
                 cb(None)

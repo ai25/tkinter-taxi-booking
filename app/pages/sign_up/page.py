@@ -1,3 +1,4 @@
+from app.api import MockApi
 from app.components.button import Button
 from app.components.frame import Frame
 from app.components.header import Header
@@ -63,6 +64,9 @@ class SignUpPage(Frame):
             AppState.user = user
             session_token = self.db.user.create_session(user_id)
             Auth.save_session(user_id, session_token)
+
+            MockApi().send_email("WELCOME", user.email)
+
             FrameController.get().show_frame("MainPage")
         else:
             self.form.show_error(error)

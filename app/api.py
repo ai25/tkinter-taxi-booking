@@ -26,3 +26,18 @@ class MockApi:
 
     def processs_payment(self, payment_details):  # noqa: ARG002
         return random.random() > 0.001  # 0.1% chance of failure
+
+    def send_email(self, template, to):
+        match template:
+            case "WELCOME":
+                subject = "Thank you for signing up!"
+                content = "..."
+                self._send_email(to, subject, content)
+            case "BOOKING_CONFIRMED":
+                subject = "Thank you for booking with us!"
+                content = "..."
+                self._send_email(to, subject, content)
+
+    def _send_email(self, to, subject, content):
+        # use an api such as SendGrid to send the email
+        pass

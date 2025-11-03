@@ -40,6 +40,7 @@ class Booking:
     id: int | None = None
     message: str | None = None
     assigned_driver_id: int | None = None
+    payment_method_id: int | None = None
 
     @property
     def is_cancelled(self) -> bool:
@@ -80,6 +81,7 @@ class PartialBooking:
     id: int | None = None
     message: str | None = None
     assigned_driver_id: int | None = None
+    payment_method_id: int | None = None
 
     def is_valid(self) -> bool:
         return all(

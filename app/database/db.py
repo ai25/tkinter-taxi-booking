@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Optional
 
 from app.database.queries.booking import BookingQueries
+from app.database.queries.payment_method import PaymentMethodQueries
 from app.database.queries.user import UserQueries
 
 
@@ -48,3 +49,7 @@ class Database:
     @property
     def booking(self):
         return BookingQueries(self)
+
+    @property
+    def payment_method(self):
+        return PaymentMethodQueries(self)

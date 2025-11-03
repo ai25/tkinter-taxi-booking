@@ -1,6 +1,9 @@
 import random
 from dataclasses import dataclass
 
+from app.database.db import Database
+from app.database.models import Booking
+
 
 PRICE_PER_MILE_PENCE = 250  # £2.50
 MPV_MULTIPLIER = 1.2
@@ -41,3 +44,7 @@ class MockApi:
     def _send_email(self, to, subject, content):
         # use an api such as SendGrid to send the email
         pass
+
+    def process_refund(self, payment_method_id: int):
+        pm = Database().payment_method.get_by_id(payment_method_id)
+        print("Refunded payment method: ", pm)

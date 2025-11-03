@@ -1,6 +1,7 @@
-import bcrypt
 import json
 from pathlib import Path
+
+import bcrypt
 
 from app.frame_controller import FrameController
 from app.state import AppState

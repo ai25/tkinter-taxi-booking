@@ -1,4 +1,4 @@
-from app.database.models import Booking, PartialBooking, PaymentMethod, User
+from app.database.models import PartialBooking, User
 
 
 class AppState:

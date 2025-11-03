@@ -6,7 +6,13 @@ from app.style import Theme
 
 
 PageName = Literal[
-    "MainPage", "SignUpPage", "LogInPage", "BookingPage", "BookingConfirmPage", "UserBookingsPage", "UserBookingPage"
+    "MainPage",
+    "SignUpPage",
+    "LogInPage",
+    "BookingPage",
+    "BookingConfirmPage",
+    "UserBookingsPage",
+    "UserBookingPage",
 ]
 
 

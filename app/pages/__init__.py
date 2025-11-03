@@ -3,13 +3,13 @@ from typing import TYPE_CHECKING
 
 
 if TYPE_CHECKING:
+    from app.pages.booking.page import BookingPage
+    from app.pages.booking_confirm.page import BookingConfirmPage
     from app.pages.log_in.page import LogInPage
     from app.pages.main.page import MainPage
     from app.pages.sign_up.page import SignUpPage
-    from app.pages.booking.page import BookingPage
-    from app.pages.booking_confirm.page import BookingConfirmPage
-    from app.pages.user_bookings.page import UserBookingsPage
     from app.pages.user_booking.page import UserBookingPage
+    from app.pages.user_bookings.page import UserBookingsPage
 
 _registry: dict[str, type[tk.Frame]] = {}
 
@@ -21,13 +21,13 @@ def get_page_class(name: str) -> type[tk.Frame]:
 
 
 def _load_pages():
+    from app.pages.booking.page import BookingPage
+    from app.pages.booking_confirm.page import BookingConfirmPage
     from app.pages.log_in.page import LogInPage
     from app.pages.main.page import MainPage
     from app.pages.sign_up.page import SignUpPage
-    from app.pages.booking.page import BookingPage
-    from app.pages.booking_confirm.page import BookingConfirmPage
-    from app.pages.user_bookings.page import UserBookingsPage
     from app.pages.user_booking.page import UserBookingPage
+    from app.pages.user_bookings.page import UserBookingsPage
 
     _registry["MainPage"] = MainPage
     _registry["SignUpPage"] = SignUpPage

@@ -3,9 +3,9 @@ import tkinter as tk
 import pyglet
 
 from app.database.db import Database
+from app.frame_controller import FrameController
 from app.state import AppState
 from app.style import Theme
-from app.frame_controller import FrameController
 from app.utils.auth import Auth
 
 
@@ -28,9 +28,7 @@ class Application(tk.Tk):
                 AppState.user = user
 
         FrameController.initialize(self)
-        # FrameController.get().show_frame("MainPage")
-        FrameController.get().show_frame("UserBookingPage", {"id": 1})
-        # FrameController.get().show_frame("BookingPage")
+        FrameController.get().show_frame("MainPage")
 
 
 if __name__ == "__main__":

@@ -20,8 +20,10 @@ CREATE TABLE IF NOT EXISTS booking (
     payment_type TEXT NOT NULL,
     paid INTEGER NOT NULL,
     cancelled INTEGER NOT NULL DEFAULT 0,
+    payment_method_id INTEGER,
     assigned_driver_id INTEGER,
     user_id INTEGER NOT NULL,
+    FOREIGN KEY (payment_method_id) REFERENCES payment_method_id(id),
     FOREIGN KEY (assigned_driver_id) REFERENCES user(id),
     FOREIGN KEY (user_id) REFERENCES user(id)
 );

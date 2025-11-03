@@ -2,7 +2,6 @@ from app.components.button import Button
 from app.components.frame import Frame
 from app.components.header import Header
 from app.components.image import Img, ImgProps
-from app.components.logo import Logo
 from app.components.split_frame import SplitFrame
 from app.components.text import Text
 from app.frame_controller import FrameController

@@ -56,7 +56,15 @@ class DefaultView(Frame):
         should_cancel = self.modal.confirm_action(self)
         if should_cancel:
             self.booking.cancelled = 1
-            Database().booking.update(self.booking)
+
+            driver, _ = Database().user.get_by_id(self.booking.assigned_driver_id)
+            if driver:
+                MockApi().send_email("TRIP_CANCELLED_DRIVER", driver.email)
+
             if self.booking.payment_type == "CARD":
                 MockApi().process_refund(self.booking.payment_method_id)
+
+            Database().booking.update(self.booking)
+            MockApi().send_email("TRIP_CANCELLED_USER", AppState.user.email)
+
             FrameController.get().show_frame("UserBookingPage", {"id": self.booking.id})

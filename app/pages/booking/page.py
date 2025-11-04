@@ -222,6 +222,7 @@ class BookingPage(Frame):
             AppState.booking.update({"paid": 1, "payment_method_id": payment_method_id})
 
             MockApi().send_email("BOOKING_CONFIRM", AppState.user.email)
+            MockApi().send_email("BOOKING_CREATED_ADMIN")
 
         booking_id, err = db.booking.create(AppState.booking)
 

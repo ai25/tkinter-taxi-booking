@@ -1,11 +1,7 @@
 from app.components.frame import Frame
-from app.components.icon import Icon
 from app.components.text import Text
 from app.database.db import Database
-from app.database.models import Booking, User
-from app.frame_controller import FrameController
 from app.style import StyleManager, Theme
-from app.utils.datetime import format_timestamp
 
 
 class AvailableDriversRadio(Frame):
@@ -25,15 +21,18 @@ class AvailableDriversRadio(Frame):
             card = Frame(self.frame, padx=5, pady=5, highlightthickness=2, highlightbackground=Theme.NEUTRAL_300)
             content = Frame(card)
             content.grid(row=0, column=0, sticky="ew", padx=20, pady=10)
+
             available = True
             assigned_bookings, _ = db.booking.get_by_driver(driver.id)
             available_text = Text(content, "xs", text="Available", fg=Theme.INDIGO_600)
             if len(assigned_bookings) > 0:
                 for assigned_booking in assigned_bookings:
-                    assigned_booking_dt = assigned_booking.pick_up_time
+                    lower = assigned_booking.pick_up_time - (60 * 60)  # -1h
+                    upper = assigned_booking.pick_up_time + (60 * 60)  # +1h
                     booking_dt = booking.pick_up_time
-                    if assigned_booking_dt + (30 * 60) <= booking_dt:  # +30min
+                    if booking_dt >= lower and booking_dt <= upper:
                         available = False
+                        break
 
             if not available:
                 available_text.configure(text="Unavailable", fg=Theme.ERROR)

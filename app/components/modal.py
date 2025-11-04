@@ -1,6 +1,7 @@
 from tkinter import Toplevel
 
 from app.components.button import Button
+from app.components.frame import Frame
 from app.components.text import Text
 from app.style import Theme
 
@@ -27,9 +28,13 @@ class Modal:
             result["confirmed"] = True
             modal.destroy()
 
-        Text(modal, "sm", text="Are you sure?").pack()
-        Button(modal, text="Yes", command=yes).pack(side="left")
-        Button(modal, text="No", command=modal.destroy).pack(side="right")
+        Text(modal, "sm", text="Are you sure?").pack(expand=True)
+        buttons = Frame(modal)
+        Button(buttons, text="No", command=modal.destroy, bg=Theme.ERROR, activebackground=Theme.ERROR).grid(
+            row=0, column=0
+        )
+        Button(buttons, text="Yes", command=yes).grid(row=0, column=1, padx=10)
+        buttons.pack(fill="y", expand=True)
 
         parent.wait_window(modal)
         return result["confirmed"]

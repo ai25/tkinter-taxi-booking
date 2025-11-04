@@ -213,5 +213,8 @@ class EditView(Frame):
             print(err)
             self.error_text.configure(text=err)
         else:
-            print(booking_id)
+            MockApi().send_email("TRIP_EDITED_USER", AppState.user.email)
+            driver, _ = Database().user.get_by_id(self.booking.assigned_driver_id)
+            if driver:
+                MockApi().send_email("TRIP_EDITED_DRIVER", driver.email)
             self.switch_view(True)

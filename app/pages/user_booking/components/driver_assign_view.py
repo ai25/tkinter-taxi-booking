@@ -1,3 +1,4 @@
+from app.api import MockApi
 from app.components.button import Button
 from app.components.frame import Frame
 from app.components.text import Text
@@ -32,7 +33,9 @@ class DriverAssignView(Frame):
     def save(self):
         id, error = Database().booking.update(self.booking)
         if id is not None:
-            print("success")
+            driver, _ = Database().user.get_by_id(self.booking.assigned_driver_id)
+            if driver:
+                MockApi().send_email("TRIP_CANCELLED_DRIVER", driver.email)
             self.switch_view()
         else:
             print("error", error)

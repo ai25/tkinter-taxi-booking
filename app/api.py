@@ -1,5 +1,6 @@
 import random
 from dataclasses import dataclass
+from typing import Literal
 
 from app.database.db import Database
 from app.database.models import Booking
@@ -30,7 +31,21 @@ class MockApi:
     def processs_payment(self, payment_details):  # noqa: ARG002
         return random.random() > 0.001  # 0.1% chance of failure
 
-    def send_email(self, template, to):
+    def send_email(
+        self,
+        template: Literal[
+            "WELCOME",
+            "BOOKING_CONFIRMED",
+            "BOOKING_CREATED_ADMIN",
+            "DRIVER_ASSIGNED",
+            "TRIP_EDITED_USER",
+            "TRIP_EDITED_DRIVER",
+            "TRIP_CANCELLED_USER",
+            "TRIP_CANCELLED_DRIVER",
+        ],
+        to=None,
+    ):
+        db = Database()
         match template:
             case "WELCOME":
                 subject = "Thank you for signing up!"
@@ -38,6 +53,32 @@ class MockApi:
                 self._send_email(to, subject, content)
             case "BOOKING_CONFIRMED":
                 subject = "Thank you for booking with us!"
+                content = "..."
+                self._send_email(to, subject, content)
+            case "BOOKING_CREATED_ADMIN":
+                subject = "You have a new booking"
+                content = "..."
+                admins, _ = db.user.get_by_role("ADMIN")
+                for admin in admins:
+                    self._send_email(admin.email, subject, content)
+            case "DRIVER_ASSIGNED":
+                subject = "You have been assigned a new trip"
+                content = "..."
+                self._send_email(to, subject, content)
+            case "TRIP_EDITED_USER":
+                subject = "Your trip details have changed"
+                content = "..."
+                self._send_email(to, subject, content)
+            case "TRIP_EDITED_DRIVER":
+                subject = "A trip you are assigned to has changed"
+                content = "..."
+                self._send_email(to, subject, content)
+            case "TRIP_CANCELLED_USER":
+                subject = "Your booking has been cancelled"
+                content = "..."
+                self._send_email(to, subject, content)
+            case "TRIP_CANCELLED_DRIVER":
+                subject = "A trip you are assigned to has been cancelled"
                 content = "..."
                 self._send_email(to, subject, content)
 

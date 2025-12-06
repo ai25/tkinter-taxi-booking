@@ -118,13 +118,11 @@ class Input(tk.Frame):
         self.on_change_callbacks.append(cb)
 
     def get(self):
-        """Get the input value (returns empty string if placeholder is shown)"""
         if self.placeholder_active:
             return ""
         return self.entry.get()
 
     def set(self, text, propagate=True):
-        """Set the input value"""
         self._hide_placeholder()
         self.entry.delete(0, tk.END)
         self.entry.insert(0, text)
@@ -133,7 +131,6 @@ class Input(tk.Frame):
                 cb(None)
 
     def clear(self):
-        """Clear the input"""
         self.entry.delete(0, tk.END)
         if self.placeholder:
             self._show_placeholder()

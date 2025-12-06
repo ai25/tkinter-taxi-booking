@@ -1,7 +1,4 @@
 # https://stackoverflow.com/questions/16188420/tkinter-scrollbar-for-frame
-#
-# This is pure garbage i hate tkinter
-#
 import tkinter as tk
 from app.components.frame import Frame
 from app.style import Theme

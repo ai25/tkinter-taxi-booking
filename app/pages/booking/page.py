@@ -214,15 +214,14 @@ class BookingPage(Frame):
                 return
 
             if new_payment_method:
-                payment_method_id = db.user.save_payment_method(
+                pm_id = db.user.save_payment_method(
                     PaymentMethod(pm.name, pm.card, int(pm.expiry_month), int(pm.expiry_year), int(pm.security_code)),
                     AppState.user.id,
                 )
-                print("payment_method_id", payment_method_id)
-            AppState.booking.update({"paid": 1, "payment_method_id": payment_method_id})
+            AppState.booking.update({"paid": 1, "payment_method_id": pm_id})
 
-            MockApi().send_email("BOOKING_CONFIRM", AppState.user.email)
-            MockApi().send_email("BOOKING_CREATED_ADMIN")
+        MockApi().send_email("BOOKING_CONFIRM", AppState.user.email)
+        MockApi().send_email("BOOKING_CREATED_ADMIN")
 
         booking_id, err = db.booking.create(AppState.booking)
 

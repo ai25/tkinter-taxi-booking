@@ -15,7 +15,7 @@ class AvailableDriversRadio(Frame):
 
         db = Database()
 
-        drivers, error = db.user.get_by_role("DRIVER")
+        drivers, _ = db.user.get_by_role("DRIVER")
 
         for index, driver in enumerate(drivers):
             card = Frame(self.frame, padx=5, pady=5, highlightthickness=2, highlightbackground=Theme.NEUTRAL_300)
@@ -26,13 +26,14 @@ class AvailableDriversRadio(Frame):
             assigned_bookings, _ = db.booking.get_by_driver(driver.id)
             available_text = Text(content, "xs", text="Available", fg=Theme.INDIGO_600)
             if len(assigned_bookings) > 0:
+                new_start = booking.pick_up_time - (60 * 10)  # -10 min
+                new_end = booking.pick_up_time + (60 * 60)  # +1h
                 for assigned_booking in assigned_bookings:
-                    lower = assigned_booking.pick_up_time - (60 * 60)  # -1h
-                    upper = assigned_booking.pick_up_time + (60 * 60)  # +1h
-                    booking_dt = booking.pick_up_time
-                    if booking_dt >= lower and booking_dt <= upper:
+                    existing_start = assigned_booking.pick_up_time
+                    existing_end = assigned_booking.pick_up_time + (60 * 60)  # +1h
+                    if new_start < existing_end and new_end > existing_start:
                         available = False
-                        break
+                        break  # break so we don't keep looping if we know they're unavailable
 
             if not available:
                 available_text.configure(text="Unavailable", fg=Theme.ERROR)

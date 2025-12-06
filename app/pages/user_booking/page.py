@@ -11,10 +11,9 @@ from app.style import Theme
 class UserBookingPage(Frame):
     def __init__(self, parent, params):
         super().__init__(parent)
-        print(params["id"])
+        self.id = params["id"] 
         self.db = Database()
         self.booking, self.error = self.db.booking.get_by_id(params["id"])
-        print(self.booking)
         self._build_ui()
 
     def _build_ui(self):
@@ -32,16 +31,19 @@ class UserBookingPage(Frame):
     def switch_view(self, view="DEFAULT", success=False):
         match view:
             case "DEFAULT":
+                self.booking, self.error = self.db.booking.get_by_id(self.id) # refresh 
                 self.view.pack_forget()
                 self.view = DefaultView(
                     self.container, self.booking, lambda view: self.switch_view(view), success=success
                 )
                 self.view.pack(fill="both", expand=True, pady=(0, 80), padx=340)
             case "EDIT":
+                self.booking, self.error = self.db.booking.get_by_id(self.id) # refresh 
                 self.view.pack_forget()
                 self.view = EditView(self.container, self.booking, lambda s: self.switch_view("DEFAULT", success=s))
                 self.view.pack(fill="both", expand=True)
             case "ASSIGN_DRIVER":
+                self.booking, self.error = self.db.booking.get_by_id(self.id) # refresh 
                 self.view.pack_forget()
                 self.view = DriverAssignView(self.container, self.booking, lambda: self.switch_view("DEFAULT"))
                 self.view.pack(fill="both", expand=True)

@@ -136,9 +136,9 @@ class Summary(Frame):
 
         bottom = Frame(self)
         pricing_container = Frame(bottom)
-        subtotal = Text(pricing_container, "sm", text=f"£{booking.subtotal_pounds}")
-        vat = Text(pricing_container, "sm", text=f"£{booking.vat_pounds}")
-        total = Text(pricing_container, "lg", text=f"£{booking.fare_pounds}")
+        subtotal = Text(pricing_container, "sm", text=f"£{booking.subtotal_pounds:.2f}")
+        vat = Text(pricing_container, "sm", text=f"£{booking.vat_pounds:.2f}") 
+        total = Text(pricing_container, "lg", text=f"£{booking.fare_pounds:.2f}") 
         Text(pricing_container, "sm", text="Subtotal:").grid(row=0, column=0, sticky="w")
         Text(pricing_container, "sm", text="VAT (20%):").grid(row=1, column=0, sticky="w")
         Text(pricing_container, "lg", text="Total:").grid(row=2, column=0, sticky="w")

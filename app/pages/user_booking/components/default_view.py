@@ -28,11 +28,11 @@ class DefaultView(Frame):
         top.grid_columnconfigure(0, weight=1)
         Text(top, "lg", text="Booking Details").grid(row=0, column=0, sticky="w")
 
-        if not booking.assigned_driver_id and AppState.user.role == "ADMIN":
+        if not booking.is_cancelled and not booking.is_completed and not booking.assigned_driver_id and AppState.user.role == "ADMIN":
             Button(top, text="Assign Driver", variant="secondary", command=lambda: switch_view("ASSIGN_DRIVER")).grid(
                 row=0, column=1
             )
-        if not booking.is_cancelled and not booking.is_completed:
+        if not booking.is_cancelled and not booking.is_completed and AppState.user.role != "DRIVER":
             Button(top, text="Edit", command=lambda: switch_view("EDIT")).grid(row=0, column=2, padx=10)
             Button(top, text="Cancel", bg=Theme.ERROR, activebackground=Theme.ERROR, command=self.confirm_cancel).grid(
                 row=0, column=3
